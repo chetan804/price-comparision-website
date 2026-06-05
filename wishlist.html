@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Wishlist – PriceHunt</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="logo" href="../index.html">🔍 <span>PriceHunt</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="compare.html">Compare</a>
+      <a class="nav-link active" href="wishlist.html">Wishlist <span class="nav-badge" id="wl-count">0</span></a>
+      <a class="nav-link" href="alerts.html">Alerts <span class="nav-badge alert-badge" id="alert-count">0</span></a>
+      <a class="nav-link" href="auth.html">Sign In</a>
+    </div>
+    <button class="hamburger" id="hamburger"><i class="ti ti-menu-2"></i></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../index.html">Home</a>
+    <a href="compare.html">Compare</a>
+    <a href="wishlist.html">Wishlist</a>
+    <a href="alerts.html">Alerts</a>
+    <a href="auth.html">Sign In</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h2>My Wishlist ❤️</h2>
+  <p id="wlSubtitle">Products you've saved for later.</p>
+</div>
+
+<div class="wishlist-wrap">
+  <div class="product-grid" id="wishlistGrid"></div>
+  <div id="wishlistEmpty" style="display:none;text-align:center;padding:5rem;color:var(--text3)">
+    <div style="font-size:4rem;margin-bottom:1rem">💝</div>
+    <p style="font-size:1.1rem;margin-bottom:0.75rem">Your wishlist is empty</p>
+    <p style="font-size:0.875rem;margin-bottom:2rem">Save products to track prices and compare later.</p>
+    <a href="../index.html" class="btn btn-primary">Discover Products</a>
+  </div>
+</div>
+
+<!-- Alert Modal -->
+<div class="modal-overlay" id="alertModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modalClose"><i class="ti ti-x"></i></button>
+    <h3 id="modalTitle">🔔 Set Price Alert</h3>
+    <p id="modalSubtitle"></p>
+    <label class="form-label">Target Price (₹)</label>
+    <input class="form-input" type="number" id="alertPrice" placeholder="e.g. 24000"/>
+    <label class="form-label">Email Address</label>
+    <input class="form-input" type="email" id="alertEmail" placeholder="you@example.com"/>
+    <div class="form-error" id="modalError"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:0.5rem" id="saveAlertBtn">Set Alert</button>
+  </div>
+</div>
+
+<!-- Compare bar -->
+<div class="compare-bar" id="compareBar">
+  <span class="compare-bar-label"><i class="ti ti-git-compare"></i> Compare:</span>
+  <div class="compare-chips" id="compareChips"></div>
+  <a href="compare.html" class="btn btn-primary">Compare Now →</a>
+  <button class="compare-clear" id="compareClear"><i class="ti ti-trash"></i></button>
+</div>
+
+<div class="toast" id="toast" role="status"><i class="ti ti-check toast-icon" id="toastIcon"></i><span id="toastMsg"></span></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/store.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+(async () => {
+  Store.syncBadges();
+  document.getElementById("hamburger").addEventListener("click",()=>
+    document.getElementById("mobileMenu").classList.toggle("open"));
+
+  const grid    = document.getElementById("wishlistGrid");
+  const empty   = document.getElementById("wishlistEmpty");
+  const sub     = document.getElementById("wlSubtitle");
+  let allProducts = [];
+  let currentModal = null;
+
+  const { products } = await API.getAllProducts();
+  allProducts = products;
+
+  function render() {
+    const ids = Store.wishlist.ids();
+    if (!ids.length) { grid.innerHTML=""; empty.style.display="block"; sub.textContent=""; return; }
+    empty.style.display = "none";
+    sub.textContent = `${ids.length} saved item${ids.length>1?"s":""}`;
+    const wl = allProducts.filter(p => ids.includes(p.id) || ids.includes(String(p.id)));
+    grid.innerHTML = wl.map(p => UI.productCard(p, { showHistory: true })).join("");
+    UI.updateCompareBar(allProducts);
+  }
+
+  grid.addEventListener("click", e => {
+    const action = e.target.closest("[data-action]");
+    if (!action) return;
+    e.stopPropagation();
+    const id = action.dataset.id;
+    const p  = allProducts.find(x => x.id == id);
+    if (!p) return;
+    if (action.dataset.action === "wishlist") {
+      Store.wishlist.toggle(id);
+      UI.toast(Store.wishlist.has(id) ? `${p.name} saved` : `Removed from wishlist`, Store.wishlist.has(id) ? "success" : "error");
+      render(); Store.syncBadges();
+    } else if (action.dataset.action === "compare") {
+      const r = Store.compare.toggle(id);
+      if (r === "full") { UI.toast(`Max ${CONFIG.MAX_COMPARE} products`, "error"); return; }
+      UI.toast(r === "added" ? `${p.name} added to compare` : `${p.name} removed`, r==="added"?"success":"error");
+      render();
+    } else if (action.dataset.action === "alert") {
+      currentModal = p; UI.openAlertModal(p);
+    }
+  });
+
+  document.getElementById("saveAlertBtn").addEventListener("click", () => {
+    const price = document.getElementById("alertPrice").value.trim();
+    const email = document.getElementById("alertEmail").value.trim();
+    const err   = document.getElementById("modalError");
+    if (!price || isNaN(price)) { err.textContent = "Enter a valid price."; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = "Enter a valid email."; return; }
+    err.textContent = "";
+    Store.alerts.set(currentModal.id, { price: Number(price), email, name: currentModal.name, emoji: currentModal.emoji });
+    UI.toast(`Alert set for ${currentModal.name}`);
+    UI.closeModal(); Store.syncBadges(); render();
+  });
+  document.getElementById("modalClose").addEventListener("click", UI.closeModal);
+  document.getElementById("alertModal").addEventListener("click", e => { if(e.target===document.getElementById("alertModal")) UI.closeModal(); });
+  document.getElementById("compareClear").addEventListener("click", ()=>{ Store.compare.clear(); render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>

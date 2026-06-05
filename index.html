@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="PriceHunt – Compare product prices across Amazon, Flipkart, Myntra and 20+ stores in real time."/>
+  <meta name="theme-color" content="#0A0A0F"/>
+  <title>PriceHunt – Smart Price Comparison</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">🔍 <span>PriceHunt</span></a>
+      <div class="nav-links">
+        <a class="nav-link active" href="index.html">Home</a>
+        <a class="nav-link" href="pages/compare.html">Compare</a>
+        <a class="nav-link" href="pages/wishlist.html">Wishlist <span class="nav-badge" id="wl-count">0</span></a>
+        <a class="nav-link" href="pages/alerts.html">Alerts <span class="nav-badge alert-badge" id="alert-count">0</span></a>
+        <a class="nav-link" href="pages/auth.html">Sign In</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="pages/compare.html">Compare</a>
+      <a href="pages/wishlist.html">Wishlist</a>
+      <a href="pages/alerts.html">Alerts</a>
+      <a href="pages/auth.html">Sign In</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <h1>Find the <span class="gradient-text">Best Price</span><br/>Across Every Store</h1>
+    <p>Compare prices from Amazon, Flipkart, Myntra, Croma &amp; 20+ stores instantly.<br/>Save up to 70% on every purchase.</p>
+    <div class="search-wrap">
+      <i class="ti ti-search search-icon" aria-hidden="true"></i>
+      <input class="search-box" id="searchInput" type="search" placeholder="Search products, brands, categories…" autocomplete="off"/>
+      <button class="btn btn-primary search-btn" id="searchBtn">Search</button>
+    </div>
+    <div class="tag-row" id="tagRow">
+      <button class="tag active" data-cat="all">All</button>
+      <button class="tag" data-cat="Electronics">Electronics</button>
+      <button class="tag" data-cat="Phones">Phones</button>
+      <button class="tag" data-cat="Laptops">Laptops</button>
+      <button class="tag" data-cat="Audio">Audio</button>
+      <button class="tag" data-cat="Wearables">Wearables</button>
+      <button class="tag" data-cat="Cameras">Cameras</button>
+      <button class="tag" data-cat="Gaming">Gaming</button>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-bar">
+    <div class="stat-card"><div class="stat-num" data-target="1200000">0</div><div class="stat-label">Products Tracked</div></div>
+    <div class="stat-card"><div class="stat-num" data-target="28">0</div><div class="stat-label">Stores Compared</div></div>
+    <div class="stat-card"><div class="stat-num" data-target="48000000">0</div><div class="stat-label">Rupees Saved Today</div></div>
+    <div class="stat-card"><div class="stat-num" data-target="99">0</div><div class="stat-label">% Price Accuracy</div></div>
+  </section>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="filter-group" id="filterGroup">
+      <button class="filter-btn on" data-filter="all">All Deals</button>
+      <button class="filter-btn" data-filter="hot">🔥 Hot Deals</button>
+      <button class="filter-btn" data-filter="new">✨ New Arrivals</button>
+      <button class="filter-btn" data-filter="trending">📈 Trending</button>
+    </div>
+    <div class="toolbar-right">
+      <select class="sort-select" id="sortSelect">
+        <option value="relevance">Sort: Relevance</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="discount">Biggest Discount</option>
+        <option value="rating">Highest Rated</option>
+        <option value="popular">Most Popular</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridBtn" aria-label="Grid view"><i class="ti ti-layout-grid"></i></button>
+        <button class="view-btn" id="listBtn" aria-label="List view"><i class="ti ti-list"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- API STATUS BANNER -->
+  <div class="api-banner" id="apiBanner">
+    <i class="ti ti-info-circle"></i>
+    <span id="apiBannerMsg">Using demo data. Add your RapidAPI key in <code>js/config.js</code> for live prices.</span>
+    <button onclick="document.getElementById('apiBanner').style.display='none'"><i class="ti ti-x"></i></button>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <main>
+    <div class="product-grid" id="productGrid">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching best prices…</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- COMPARE BAR -->
+  <div class="compare-bar" id="compareBar">
+    <span class="compare-bar-label"><i class="ti ti-git-compare"></i> Compare:</span>
+    <div class="compare-chips" id="compareChips"></div>
+    <a href="pages/compare.html" class="btn btn-primary">Compare Now →</a>
+    <button class="compare-clear" id="compareClear"><i class="ti ti-trash"></i></button>
+  </div>
+
+  <!-- PRICE ALERT MODAL -->
+  <div class="modal-overlay" id="alertModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close"><i class="ti ti-x"></i></button>
+      <h3 id="modalTitle">🔔 Set Price Alert</h3>
+      <p id="modalSubtitle">Get notified when the price drops to your target.</p>
+      <label class="form-label">Target Price (₹)</label>
+      <input class="form-input" type="number" id="alertPrice" placeholder="e.g. 24000" min="1"/>
+      <label class="form-label">Email Address</label>
+      <input class="form-input" type="email" id="alertEmail" placeholder="you@example.com"/>
+      <div class="form-error" id="modalError"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:0.5rem" id="saveAlertBtn">Set Alert</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <i class="ti ti-check toast-icon" id="toastIcon"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Sign In – PriceHunt</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="logo" href="../index.html">🔍 <span>PriceHunt</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="compare.html">Compare</a>
+      <a class="nav-link" href="wishlist.html">Wishlist <span class="nav-badge" id="wl-count">0</span></a>
+      <a class="nav-link" href="alerts.html">Alerts <span class="nav-badge alert-badge" id="alert-count">0</span></a>
+    </div>
+    <button class="hamburger" id="hamburger"><i class="ti ti-menu-2"></i></button>
+  </div>
+</nav>
+
+<div class="auth-wrap">
+  <!-- SIGN IN CARD -->
+  <div class="auth-card" id="loginCard">
+    <h2>Welcome back 👋</h2>
+    <p>Sign in to sync your wishlist and alerts across devices.</p>
+
+    <button class="social-btn" onclick="socialLogin('Google')">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <button class="social-btn" onclick="socialLogin('GitHub')">
+      <i class="ti ti-brand-github" style="font-size:18px"></i>
+      Continue with GitHub
+    </button>
+
+    <div class="auth-divider">or</div>
+
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="loginPassword" placeholder="••••••••"/>
+    </div>
+    <div class="remember-row" style="margin-bottom:1.25rem">
+      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="checkbox" id="remember"/> Remember me
+      </label>
+      <a href="#">Forgot password?</a>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="login()">Sign In</button>
+    <div class="auth-switch">
+      Don't have an account? <a onclick="toggle()">Sign up free</a>
+    </div>
+  </div>
+
+  <!-- SIGN UP CARD -->
+  <div class="auth-card" id="signupCard" style="display:none">
+    <h2>Create account 🚀</h2>
+    <p>Join thousands of smart shoppers saving on every purchase.</p>
+
+    <button class="social-btn" onclick="socialLogin('Google')">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign up with Google
+    </button>
+
+    <div class="auth-divider">or</div>
+
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input class="form-input" type="text" id="signupName" placeholder="Chetan Kumar"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="signupEmail" placeholder="you@example.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="signupPassword" placeholder="Min. 8 characters"/>
+    </div>
+    <div class="form-error" id="signupError"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:0.5rem" onclick="signup()">Create Account</button>
+    <div class="auth-switch">
+      Already have an account? <a onclick="toggle()">Sign in</a>
+    </div>
+  </div>
+
+  <!-- LOGGED IN CARD -->
+  <div class="auth-card" id="profileCard" style="display:none">
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;margin:0 auto 1rem" id="avatarCircle"></div>
+      <h2 id="profileName"></h2>
+      <p id="profileEmail" style="color:var(--text2);font-size:0.875rem;margin-top:4px"></p>
+    </div>
+    <div style="background:var(--bg4);border-radius:12px;padding:1rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;text-align:center;margin-bottom:1.5rem">
+      <div><div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700" id="statWL">0</div><div style="font-size:0.73rem;color:var(--text3)">Wishlist</div></div>
+      <div><div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700" id="statAL">0</div><div style="font-size:0.73rem;color:var(--text3)">Alerts</div></div>
+      <div><div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700">28</div><div style="font-size:0.73rem;color:var(--text3)">Stores</div></div>
+    </div>
+    <button class="btn btn-danger" style="width:100%" onclick="logout()"><i class="ti ti-logout"></i> Sign Out</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"><i class="ti ti-check toast-icon" id="toastIcon"></i><span id="toastMsg"></span></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/store.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+Store.syncBadges();
+document.getElementById("hamburger")?.addEventListener("click",()=>
+  document.getElementById("mobileMenu")?.classList.toggle("open"));
+
+function toggle() {
+  const l = document.getElementById("loginCard");
+  const s = document.getElementById("signupCard");
+  l.style.display = l.style.display==="none" ? "block" : "none";
+  s.style.display = s.style.display==="none" ? "block" : "none";
+}
+
+function login() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const pass  = document.getElementById("loginPassword").value;
+  if (!email || !pass) { UI.toast("Please fill all fields","error"); return; }
+  Store.auth.login({ name: email.split("@")[0], email });
+  UI.toast("Signed in successfully! ✅");
+  setTimeout(showProfile, 400);
+}
+
+function signup() {
+  const name  = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const pass  = document.getElementById("signupPassword").value;
+  const err   = document.getElementById("signupError");
+  if (!name || !email || !pass) { err.textContent = "All fields are required."; return; }
+  if (pass.length < 8) { err.textContent = "Password must be at least 8 characters."; return; }
+  err.textContent = "";
+  Store.auth.login({ name, email });
+  UI.toast("Account created! Welcome 🎉");
+  setTimeout(showProfile, 400);
+}
+
+function socialLogin(provider) {
+  const user = { name: "Demo User", email: "demo@pricehunt.in" };
+  Store.auth.login(user);
+  UI.toast(`Signed in with ${provider} ✅`);
+  setTimeout(showProfile, 400);
+}
+
+function logout() {
+  Store.auth.logout();
+  UI.toast("Signed out","error");
+  document.getElementById("profileCard").style.display = "none";
+  document.getElementById("loginCard").style.display = "block";
+}
+
+function showProfile() {
+  const user = Store.auth.user();
+  if (!user) return;
+  document.getElementById("loginCard").style.display   = "none";
+  document.getElementById("signupCard").style.display  = "none";
+  document.getElementById("profileCard").style.display = "block";
+  document.getElementById("profileName").textContent   = user.name;
+  document.getElementById("profileEmail").textContent  = user.email;
+  document.getElementById("avatarCircle").textContent  = user.name[0].toUpperCase();
+  document.getElementById("statWL").textContent = Store.wishlist.count();
+  document.getElementById("statAL").textContent = Store.alerts.count();
+}
+
+if (Store.auth.isLoggedIn()) showProfile();
+</script>
+</body>
+</html>
