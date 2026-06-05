@@ -82,22 +82,22 @@ Push your updated `config.js` to GitHub → Pages auto-rebuilds.
 
 ## ✨ Features
 
-| Feature | Description |
-|---|---|
-| **Live Price Search** | Searches RapidAPI or falls back to demo data |
-| **Multi-Store Comparison** | Amazon, Flipkart, Croma, brand stores |
-| **Best Price Highlight** | Green highlight on lowest price per product |
-| **Price History Chart** | 12-month mini bar chart per product |
-| **Wishlist** | Persistent across sessions (localStorage) |
-| **Compare Tool** | Side-by-side specs for up to 4 products |
-| **Price Alerts** | Set target price + email per product |
-| **Authentication UI** | Sign In / Sign Up / Social login (demo) |
-| **Search + Filter** | By category, deal type, text query |
-| **Sort** | Price, discount, rating, popularity |
-| **Grid / List view** | Toggle between layouts |
-| **Responsive** | Mobile-first, works on all screen sizes |
-| **Dark theme** | Polished dark UI throughout |
-| **Animated counters** | Stats bar animation on load |
+| Feature                               | Description                                  |
+|---                                    |---                                           |
+| **Live Price Search**                 | Searches RapidAPI or falls back to demo data |
+| **Multi-Store Comparison**            | Amazon, Flipkart, Croma, brand stores        |
+| **Best Price Highlight**              | Green highlight on lowest price per product  |
+| **Price History Chart**               | 12-month mini bar chart per product          |
+| **Wishlist**                          | Persistent across sessions (localStorage)    |
+| **Compare Tool**                      | Side-by-side specs for up to 4 products      |
+| **Price Alerts**                      | Set target price + email per product         |
+| **Authentication UI**                 | Sign In / Sign Up / Social login (demo)      |
+| **Search + Filter**                   | By category, deal type, text query           |
+| **Sort**                              | Price, discount, rating, popularity          |
+| **Grid / List view**                  | Toggle between layouts                       |
+| **Responsive**                        | Mobile-first, works on all screen sizes      |
+| **Dark theme**                        | Polished dark UI throughout                  |
+| **Animated counters**                 | Stats bar animation on load                  |
 
 ---
 
@@ -135,7 +135,7 @@ Deploy a FastAPI app that:
 
 ---
 
-## 📋 Resume Description (ready to paste)
+
 
 > Developed a full-stack Product Price Comparison Website enabling users to find the best deals across 28+ e-commerce platforms in real time. Built with Vanilla JavaScript, HTML5, and CSS3, integrated with RapidAPI's Real-Time Product Search API for live price aggregation. Key features include multi-store price comparison with best-price highlighting, 12-month price history charts, wishlist management, a side-by-side product comparison tool (up to 4 products), price alert system with email notification support, and user authentication UI. Implemented advanced search, category filtering, multi-criteria sorting, and grid/list view toggling. Deployed on GitHub Pages with full localStorage-based state persistence.
 
